@@ -58,6 +58,19 @@ public class Check : Payment
     }
 }
 
+public class Credit : Payment
+{
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public DateTime ExpDate { get; set; }
+
+    public bool Authorized()
+    {
+        // Authorization logic for the credit card
+        return false;
+    }
+}
+
 public class OrderDetail
 {
     public LineItem LineItem { get; set; }
@@ -103,19 +116,6 @@ public class Item
     public bool InStock()
     {
         // Check if the item is in stock
-        return false;
-    }
-}
-
-public class Credit : Payment
-{
-    public string Name { get; set; }
-    public string Type { get; set; }
-    public DateTime ExpDate { get; set; }
-
-    public bool Authorized()
-    {
-        // Authorization logic for the credit card
         return false;
     }
 }
