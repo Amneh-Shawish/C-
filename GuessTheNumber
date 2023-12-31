@@ -1,0 +1,85 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace GuessTheNumberGame
+{
+    public partial class MainForm : Form
+    {
+        private int targetNumber;
+        private bool gameOver;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            StartNewGame();
+        }
+
+        private void StartNewGame()
+        {
+            Random random = new Random();
+            targetNumber = random.Next(1, 1001);
+            gameOver = false;
+
+            guessLabel.Text = "I have a number between 1 and 1000 - can you guess my number?";
+            guessTextBox.Text = string.Empty;
+            guessTextBox.Enabled = true;
+            guessButton.Enabled = true;
+            restartButton.Enabled = false;
+            guessTextBox.BackColor = DefaultBackColor;
+            BackColor = DefaultBackColor;
+        }
+
+        private void GuessButton_Click(object sender, EventArgs e)
+        {
+            if (gameOver)
+                return;
+
+            int guess;
+            if (int.TryParse(guessTextBox.Text, out guess))
+            {
+                if (guess == targetNumber)
+                {
+                    MessageBox.Show("Correct!");
+                    guessTextBox.Enabled = false;
+                    guessButton.Enabled = false;
+                    restartButton.Enabled = true;
+                    BackColor = Color.Green;
+                    gameOver = true;
+                }
+                else
+                {
+                    if (guess < targetNumber)
+                    {
+                        guessLabel.Text = "Too Low!";
+                    }
+                    else
+                    {
+                        guessLabel.Text = "Too High!";
+                    }
+
+                    if (Math.Abs(guess - targetNumber) < 50)
+                    {
+                        guessTextBox.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        guessTextBox.BackColor = Color.Blue;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid input. Please enter a valid number.");
+            }
+
+            guessTextBox.Text = string.Empty;
+            guessTextBox.Focus();
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            StartNewGame();
+        }
+    }
+}
